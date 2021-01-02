@@ -26,7 +26,8 @@ const ProfileSchema = new Schema({
     },
     date:{
         type:Date,
-        default:Date.now
+        //  +28800000 原因：将获取到的服务器时间转化为北京时间
+        default:new Date(new Date().getTime() + 28800000)
     }
 })
 

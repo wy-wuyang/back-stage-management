@@ -43,7 +43,7 @@ require("./config/passport")(passport);
 
 // 测试路由
 app.get("/",(req,res)=>{
-    res.send("Hellow World!!!");    //成功时返回一个字符串hello world
+    res.send("Hello World!!!");    //成功时返回一个字符串hello world
 })
 
 
