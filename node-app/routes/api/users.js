@@ -119,6 +119,22 @@ router.get("/current",passport.authenticate("jwt",{session:false}),(req,res)=>{
 })
 
 
+/**
+ * $route GET api/users/userinfo
+ * @desc 获取所有用户信息
+ * @access Private
+ */
+router.get("/userinfo",(req,res)=>{
+    User.find().then(user=>{
+        if(!user){
+            return res.status(404).json("没有任何内容")
+        }
+        res.json(user);
+    }).catch(err=>{
+        res.status(404).json(err)
+    })
+})
+
 
 
 module.exports = router;
