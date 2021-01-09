@@ -84,6 +84,7 @@ router.post("/login",(req,res)=>{
                     name:user.name,
                     avater:user.avater,
                     identity:user.identity,
+                    status:user.status
                 }
                 // jwt.sign("规则","加密名字","token过期时间","箭头函数");
                 jwt.sign(rule,Keys.secretOrKey,{expiresIn:3600},(err,token)=>{
@@ -136,5 +137,25 @@ router.get("/userinfo",(req,res)=>{
 })
 
 
+/**
+ * $route POST api/users/edit:id
+ * @desc 编辑用户信息接口
+ * @access Private
+ */
+
+router.post("/edit/:id",passport.authenticate('jwt',{session:false}),(req,res)=>{
+    const userFields = {};
+
+    if(req.body.name) userFields.name = req.body.name;
+    if(req.body.email) userFields.email = req.body.email;
+    if(req.body.identity) userFields.identity = req.body.identity;
+    if(req.body.status) userFields.status = req.body.status;
+
+    User.findOneAndUpdate(
+        {_id:req.params.id},
+        {$set:userFields},
+        {new:true}
+    ).then(user=>res.json(user))
+})
 
 module.exports = router;
