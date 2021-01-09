@@ -30,7 +30,7 @@ router.get("/test",(req,res)=>{
 
 /**
  * $route  GET api/users/register
- * @desc 返回请求的的json数据
+ * @desc 返回请求的的json数据   注册
  * @access public
  */
 router.post("/register",(req,res)=>{
@@ -64,7 +64,7 @@ router.post("/register",(req,res)=>{
 
 /**
  * $route  POST api/users/login
- * @desc 返回token jwt passport
+ * @desc 返回token jwt passport     登录
  * @access public
  */
 router.post("/login",(req,res)=>{
@@ -83,7 +83,7 @@ router.post("/login",(req,res)=>{
                     id:user.id,
                     name:user.name,
                     avater:user.avater,
-                    identity:user.identity
+                    identity:user.identity,
                 }
                 // jwt.sign("规则","加密名字","token过期时间","箭头函数");
                 jwt.sign(rule,Keys.secretOrKey,{expiresIn:3600},(err,token)=>{
@@ -114,7 +114,7 @@ router.get("/current",passport.authenticate("jwt",{session:false}),(req,res)=>{
         id:req.user.id,
         name:req.user.name,
         email:req.user.email,
-        identity:req.user.identity
+        identity:req.user.identity,
     });
 })
 
