@@ -22,9 +22,9 @@ const UserSchema = new Schema({
         type:String,
         required:true
     },
-    status:{//状态是否启用  0 启用   1 禁用
+    status:{//状态是否启用  1 启用   2 禁用
         type:Number,
-        default: 0
+        default: 1
     },
     date:{
         type:Date,

@@ -73,8 +73,12 @@ router.post("/login",(req,res)=>{
 
     // 查询数据库
     User.findOne({email}).then(user=>{
+        console.log(user._doc.status);
         if(!user){
             return res.status(404).json("用户不存在!");
+        }
+        if(user._doc.status == 2){
+            return res.json({result:"该用户已被禁用!"})
         }
         // 密码匹配
         bcrypt.compare(password, user.password).then(isMatch=>{
@@ -150,7 +154,7 @@ router.post("/edit/:id",passport.authenticate('jwt',{session:false}),(req,res)=>
     if(req.body.email) userFields.email = req.body.email;
     if(req.body.identity) userFields.identity = req.body.identity;
     if(req.body.status) userFields.status = req.body.status;
-
+    console.log(req.body);
     User.findOneAndUpdate(
         {_id:req.params.id},
         {$set:userFields},
