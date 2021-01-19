@@ -73,35 +73,36 @@ router.post("/login",(req,res)=>{
 
     // 查询数据库
     User.findOne({email}).then(user=>{
-        console.log(user._doc.status);
+        // console.log(user._doc.status); //检查用户的状态
         if(!user){
             return res.status(404).json("用户不存在!");
         }
-        if(user._doc.status == 2){
+        if(user._doc.status == 1){
+            // 密码匹配
+            bcrypt.compare(password, user.password).then(isMatch=>{
+                if(isMatch){
+                    const rule = {
+                        id:user.id,
+                        name:user.name,
+                        avater:user.avater,
+                        identity:user.identity,
+                        status:user.status
+                    }
+                    // jwt.sign("规则","加密名字","token过期时间","箭头函数");
+                    jwt.sign(rule,Keys.secretOrKey,{expiresIn:3600},(err,token)=>{
+                        res.json({
+                            success:true,
+                            token:"Bearer " + token
+                        })
+                    })
+                    // res.json({msg:"success"})
+                }else{
+                    return res.status(400).json("密码错误!")
+                }
+            })
+        }else{
             return res.json({result:"该用户已被禁用!"})
         }
-        // 密码匹配
-        bcrypt.compare(password, user.password).then(isMatch=>{
-            if(isMatch){
-                const rule = {
-                    id:user.id,
-                    name:user.name,
-                    avater:user.avater,
-                    identity:user.identity,
-                    status:user.status
-                }
-                // jwt.sign("规则","加密名字","token过期时间","箭头函数");
-                jwt.sign(rule,Keys.secretOrKey,{expiresIn:3600},(err,token)=>{
-                    res.json({
-                        success:true,
-                        token:"Bearer " + token
-                    })
-                })
-                // res.json({msg:"success"})
-            }else{
-                return res.status(400).json("密码错误!")
-            }
-        })
     })
 })
 
