@@ -155,7 +155,6 @@ router.post("/edit/:id",passport.authenticate('jwt',{session:false}),(req,res)=>
     if(req.body.email) userFields.email = req.body.email;
     if(req.body.identity) userFields.identity = req.body.identity;
     if(req.body.status) userFields.status = req.body.status;
-    console.log(req.body);
     User.findOneAndUpdate(
         {_id:req.params.id},
         {$set:userFields},

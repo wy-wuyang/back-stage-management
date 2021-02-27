@@ -28,7 +28,6 @@ const UserSchema = new Schema({
     },
     date:{
         type:Date,
-        // default:Date.now
         default:new Date(new Date().getTime() + 28800000)
     }
 })
